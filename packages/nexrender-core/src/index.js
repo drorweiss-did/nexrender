@@ -117,7 +117,7 @@ const render = (job, settings = {}) => {
         .then(job => state(job, settings, script, 'script'))
         .then(job => state(job, settings, dorender, 'dorender'))
         .then(job => state(job, settings, postrender, 'postrender'))
-        .then(job => state(job, settings, cleanup, 'cleanup'))
+        .finally(() => state(job, settings, cleanup, 'cleanup'))
 }
 
 module.exports = {

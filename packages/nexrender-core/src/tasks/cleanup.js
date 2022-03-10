@@ -10,17 +10,19 @@ module.exports = function(job, settings) {
     }
 
     return new Promise((resolve) => {
-        settings.logger.log(`[${job.uid}] cleaning up...`);
+        if (job.workpath) {
+            settings.logger.log(`[${job.uid}] cleaning up...`);
 
-        rimraf(job.workpath, {glob: false}, (err) => {
-            if (!err) {
-                settings.logger.log(`[${job.uid}] Temporary AfterEffects project deleted. If you want to inspect it for debugging, use "--skip-cleanup"`)
-            } else {
-                settings.logger.log(`[${job.uid}] Temporary AfterEffects could not be deleted. (Error: ${err.code}). Please delete the folder manually: ${job.workpath}`)
-            }
+            rimraf(job.workpath, {glob: false}, (err) => {
+                if (!err) {
+                    settings.logger.log(`[${job.uid}] Temporary AfterEffects project deleted. If you want to inspect it for debugging, use "--skip-cleanup"`)
+                } else {
+                    settings.logger.log(`[${job.uid}] Temporary AfterEffects could not be deleted. (Error: ${err.code}). Please delete the folder manually: ${job.workpath}`)
+                }
 
-            resolve(job)
-        })
+                resolve(job)
+            });
+        }
     })
 };
 
